@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import MyComponent from './mycomponent';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -9,7 +8,8 @@ function App() {
   return (
     <>
       <div>
-        <h1 className='text-center'>Hello World!</h1>
+        <h1 className='text-start'>Hello World!</h1>
+        <MyComponent />
       </div>  
     </>
   )
