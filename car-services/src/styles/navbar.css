@@ -3,10 +3,8 @@
     margin: 0;
     padding: 0;
 }
-ul{
-    background-color: red;
-}
+
 li
 {
-    font-size: 300px;
+    font-size: 30px;
 }

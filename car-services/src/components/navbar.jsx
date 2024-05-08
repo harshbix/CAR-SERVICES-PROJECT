@@ -1,16 +1,27 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/navbar.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 
 function Navbar() {
-    <>
-        <div>
-            <ul>
-                <li>yooo</li>
-                <li>yooo</li>
-                <li>yooo</li>
-            </ul>
-        </div>
-    </>
+    return (
+        <nav className="navbar navbar-expand navbar-dark bg-dark">
+            <div className="container d-flex justify-content-center">
+                <ul className="navbar-nav row">
+                    <li className="nav-item col">
+                        <a className="nav-link" href="#"><FontAwesomeIcon icon={faHome} /></a>
+                    </li>
+                    <li className="nav-item col">
+                        <a className="nav-link" href="#"><FontAwesomeIcon icon={faSearch} /></a>
+                    </li>
+                    <li className="nav-item col">
+                        <a className="nav-link" href="#"><FontAwesomeIcon icon={faUser} /></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    );
 }
-export default Navbar
+
+export default Navbar;
