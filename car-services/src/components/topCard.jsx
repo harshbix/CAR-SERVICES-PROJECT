@@ -8,16 +8,20 @@ const TopCard = ({ name, location, stars }) => {
         <div className="top-card card">
             <div className="card-body">
                 <div className="icon-container">
-                    <span className="heart-icon">
-                        <FontAwesomeIcon icon={faHeart} className='bg-black p-1 rounded-circle'/>
+                    <span className="heart-icon text-black p-2">
+                        <FontAwesomeIcon icon={faHeart} className=''/>
                     </span>
-                    <span className="star-icon bg-black py-1 px-2 rounded-1">
+                    <span className="star-icon text-black p-2">
                         <FontAwesomeIcon icon={faStar} /> {stars}
                     </span>
                 </div>
+                <div className="box d-flex justify-content-between my-3">
+                <div className="name-loc">
                 <h5 className="card-title">{name}</h5>
                 <p className="card-text text-muted">{location}</p>
-                <button className="btn btn-primary">Contact</button>
+                </div>
+                <button className="btn btn-primary btn-lg">Contact</button>
+                </div>
             </div>
         </div>
     );
