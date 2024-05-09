@@ -23,4 +23,5 @@
 .form-control::placeholder
 {
     text-align: center;
+    color: #ddd;
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faHeart } from '@fortawesome/free-solid-svg-icons';
-import '../styles/topCard.css'; // Import your custom CSS file
+import '../styles/topCard.css';
 
 const TopCard = ({ name, location, stars }) => {
     return (
         <div className="top-card card">
             <div className="card-body">
                 <div className="icon-container">
-                    <span className="heart-icon text-black p-2">
+                    <span className="heart-icon text-black  py-2 pe-2">
                         <FontAwesomeIcon icon={faHeart} className=''/>
                     </span>
                     <span className="star-icon text-black p-2">
@@ -20,7 +20,7 @@ const TopCard = ({ name, location, stars }) => {
                 <h5 className="card-title">{name}</h5>
                 <p className="card-text text-muted">{location}</p>
                 </div>
-                <button className="btn btn-primary btn-lg">Contact</button>
+                <button className="btn btn-primary px-3">Contact</button>
                 </div>
             </div>
         </div>
