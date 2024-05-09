@@ -22,6 +22,9 @@ const Home = ({ username }) => {
             <div>
                 <h4 className='text-white mt-3'>Categories</h4>
             </div>
+            <div className='categories bg-dark'>
+     
+            </div>
             <Navbar />
         </div>
     );
