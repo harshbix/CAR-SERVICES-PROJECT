@@ -19,12 +19,6 @@ const Home = ({ username }) => {
                 <h4 className='text-white mb-4'>Top service provider</h4>
                 <TopCard name={"Mwajuma Ibile"} location={"Mbeya"} stars={5}/>
             </div>
-            <div>
-                <h4 className='text-white mt-3'>Categories</h4>
-            </div>
-            <div className='categories bg-dark'>
-     
-            </div>
             <Navbar />
         </div>
     );

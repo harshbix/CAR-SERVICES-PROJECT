@@ -9,7 +9,7 @@ const TopCard = ({ name, location, stars }) => {
             <div className="card-body">
                 <div className="icon-container">
                     <span className="heart-icon text-black  py-2 pe-2">
-                        <FontAwesomeIcon icon={faHeart} className=''/>
+                        <FontAwesomeIcon icon={faHeart} />
                     </span>
                     <span className="star-icon text-black p-2">
                         <FontAwesomeIcon icon={faStar} /> {stars}
