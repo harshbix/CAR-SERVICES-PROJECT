@@ -9,7 +9,7 @@ const Home = ({ username }) => {
 
     useEffect(() => {
         // Fetch user data from users.json
-        fetch('../assets/users.json')
+        fetch('../../public/users.json')
             .then(response => response.json())
             .then(data => setUserData(data))
             .catch(error => console.error('Error fetching user data:', error));
