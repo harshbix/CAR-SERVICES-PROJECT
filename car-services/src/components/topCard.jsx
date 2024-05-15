@@ -5,7 +5,7 @@ import '../styles/topCard.css';
 
 const TopCard = ({ name, location, stars }) => {
     return (
-        <div className="top-card card my-2">
+        <div className="top-card card my-4">
             <div className="card-body">
                 <div className="icon-container">
                     <span className="heart-icon text-black  py-2 pe-2">

@@ -12,7 +12,7 @@ const Search = () => {
                         <FontAwesomeIcon icon={faSearch} className="text-white" />
                     </span>
                 </div>
-                <input type="text" className="form-control bg-black border-black text-white" placeholder="Ex : Tire Repair"/>
+                <input type="text" className="form-control bg-black border-black text-white" placeholder="Enter your location"/>
             </div>
             <button type="submit" className="btn col-auto">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="text-dark bg-white p-3 rounded-2 " />
