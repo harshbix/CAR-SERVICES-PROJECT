@@ -16,7 +16,7 @@ const Home = ({ username }) => {
     }, []);
 
     return (
-        <div className='container py-4'>
+        <div className='container py-4 bg-dark'>
             {username ? (
                 <h4 className='text-white'>Welcome, {username}!</h4>
             ) : (
