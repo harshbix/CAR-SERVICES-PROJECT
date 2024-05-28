@@ -9,4 +9,4 @@ const Mechanics = () =>
         )
     }
 
-export default Admin;
+export default Mechanics;
