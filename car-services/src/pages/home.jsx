@@ -8,8 +8,8 @@ const Home = ({ username }) => {
     const [userData, setUserData] = useState([]);
 
     useEffect(() => {
-        // Fetch user data from users.json
-        fetch('../../users.json')
+        // Fetch user data from public/users.json
+        fetch('/users.json')
             .then(response => response.json())
             .then(data => setUserData(data))
             .catch(error => console.error('Error fetching user data:', error));
