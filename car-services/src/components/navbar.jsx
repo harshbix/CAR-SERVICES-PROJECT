@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     return (
@@ -10,13 +11,13 @@ function Navbar() {
             <div className="container row">
                 <ul className="navbar-nav col-12 ms-5 row">
                     <li className="nav-item col">
-                        <a className="nav-link" href="#"><FontAwesomeIcon icon={faHome} /></a>
+                        <Link className="nav-link" to="/"><FontAwesomeIcon icon={faHome} /></Link>
                     </li>
                     <li className="nav-item col">
-                        <a className="nav-link" href="#"><FontAwesomeIcon icon={faSearch} /></a>
+                        <Link className="nav-link" to="/search"><FontAwesomeIcon icon={faSearch} /></Link>
                     </li>
                     <li className="nav-item col">
-                        <a className="nav-link" href="#"><FontAwesomeIcon icon={faUser} /></a>
+                        <Link className="nav-link" to="/profile"><FontAwesomeIcon icon={faUser} /></Link>
                     </li>
                 </ul>
             </div>
