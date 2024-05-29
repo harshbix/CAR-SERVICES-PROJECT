@@ -28,7 +28,7 @@ const Login = () => {
                                 </label>
                             </div>
                             <button type="submit" className="btn btn-primary w-100 mb-2">Sign In</button>
-                            <button type="button" className="btn btn-secondary w-100" onClick={() => navigate('/signup')}>Sign Up</button>
+                            <button type="button" className="btn btn-outline-secondary  w-100" onClick={() => navigate('/signup')}>Sign Up</button>
                         </form>
                     </div>
                 </div>
