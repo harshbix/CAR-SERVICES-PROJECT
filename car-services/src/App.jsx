@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './pages/home';
 import SearchPage from './pages/searching';
 import Profile from './pages/profile';
-import Navbar from './components/navbar'; // Adjust the path if necessary
+import Navbar from './components/navbar'; 
+import Login from './pages/login';
 
 function App() {
   const username = 'Tupac Shakur';
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Home username={username} />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
