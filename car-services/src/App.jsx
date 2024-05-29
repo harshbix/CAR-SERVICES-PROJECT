@@ -6,6 +6,7 @@ import SearchPage from './pages/searching';
 import Profile from './pages/profile';
 import Navbar from './components/navbar'; 
 import Login from './pages/login';
+import SignUp from './pages/signup';
 import Admin from './pages/admin';
 import Mechanics from './pages/mechanics';
 
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/mechanics" element={<Mechanics />} />
         </Routes>

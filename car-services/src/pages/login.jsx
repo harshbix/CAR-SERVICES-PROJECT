@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Login = () => {
+    const navigate = useNavigate();
+
     return (
         <>
             <div className="container vh-100 d-flex align-items-center justify-content-center bg-dark">
@@ -24,7 +27,8 @@ const Login = () => {
                                     <input className="form-check-input" type="checkbox" name="remember" /> Remember me
                                 </label>
                             </div>
-                            <button type="submit" className="btn btn-primary w-100">Sign In</button>
+                            <button type="submit" className="btn btn-primary w-100 mb-2">Sign In</button>
+                            <button type="button" className="btn btn-secondary w-100" onClick={() => navigate('/signup')}>Sign Up</button>
                         </form>
                     </div>
                 </div>
