@@ -1,29 +1,39 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './pages/home';
 import SearchPage from './pages/searching';
 import Profile from './pages/profile';
 import Navbar from './components/navbar'; 
 import Login from './pages/login';
+import Admin from './pages/admin';
+import Mechanics from './pages/mechanics';
 
-function App() {
+const App = () => {
   const username = 'Tupac Shakur';
+
+  const ShowNavbar = () => {
+    const location = useLocation();
+    const showNavbar = location.pathname === '/' || location.pathname === '/search' || location.pathname === '/profile';
+
+    return showNavbar ? <Navbar /> : null;
+  };
 
   return (
     <Router>
       <div>
-        <Navbar />
+        <ShowNavbar />
         <Routes>
           <Route path="/" element={<Home username={username} />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/mechanics" element={<Mechanics />} />
         </Routes>
       </div>
     </Router>
   );
-}
+};
 
 export default App;
-
