@@ -16,8 +16,8 @@ const SignUp = () => {
                                 <input type="text" className="form-control" id="name" placeholder="Enter name" name="name" />
                             </div>
                             <div className="mb-3">
-                                <label htmlFor="number" className="form-label">Number:</label>
-                                <input type="text" className="form-control" id="number" placeholder="Enter number" name="number" />
+                                <label htmlFor="number" className="form-label">Phone:</label>
+                                <input type="text" className="form-control" id="number" placeholder="Enter phone number" name="number" />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="email" className="form-label">Email:</label>
