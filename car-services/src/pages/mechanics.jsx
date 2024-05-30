@@ -1,13 +1,33 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import '../styles/mechanics.css'; // Ensure this file exists and has the styles
+import '../styles/mechanics.css'; 
 import { Button, Offcanvas } from 'react-bootstrap';
 
 const Mechanics = () => {
+    const initialNotifications = [
+        { id: 1, text: 'New request from John Doe', read: false },
+        { id: 2, text: 'New request from Jane Smith', read: false },
+        { id: 3, text: 'Request from Michael Johnson is pending', read: false },
+    ];
+
+    const [notifications, setNotifications] = useState(initialNotifications);
+
+    const handleAccept = (id) => {
+        setNotifications(notifications.map(notification => 
+            notification.id === id ? { ...notification, read: true } : notification
+        ));
+    };
+
+    const handleCancel = (id) => {
+        setNotifications(notifications.filter(notification => notification.id !== id));
+    };
+
+    const unreadCount = notifications.filter(notification => !notification.read).length;
+
     return (
         <div>
-            <Header />
+            <Header unreadCount={unreadCount} />
             <div className="container-fluid">
                 <div className="row">
                     <Sidebar />
@@ -18,10 +38,25 @@ const Mechanics = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">Notifications</h5>
                                     <ul className="list-group list-group-flush">
-                                        {/* Example notifications */}
-                                        <li className="list-group-item">New request from John Doe</li>
-                                        <li className="list-group-item">New request from Jane Smith</li>
-                                        <li className="list-group-item">Request from Michael Johnson is pending</li>
+                                        {notifications.map(notification => (
+                                            <li key={notification.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                                {notification.text}
+                                                <div>
+                                                    <button 
+                                                        className="btn btn-success btn-sm me-2"
+                                                        onClick={() => handleAccept(notification.id)}
+                                                    >
+                                                        <i className="fas fa-check"></i>
+                                                    </button>
+                                                    <button 
+                                                        className="btn btn-danger btn-sm"
+                                                        onClick={() => handleCancel(notification.id)}
+                                                    >
+                                                        <i className="fas fa-times"></i>
+                                                    </button>
+                                                </div>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                             </div>
@@ -33,7 +68,7 @@ const Mechanics = () => {
     );
 };
 
-const Header = () => {
+const Header = ({ unreadCount }) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -45,7 +80,7 @@ const Header = () => {
                 <i className="fas fa-bars"></i>
             </Button>
             <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Mechanics Dashboard</a>
-            <NotificationIcon />
+            <NotificationIcon unreadCount={unreadCount} />
             <Offcanvas show={show} onHide={handleClose} id="sidebar" className="d-md-none">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Sidebar</Offcanvas.Title>
@@ -58,11 +93,15 @@ const Header = () => {
     );
 };
 
-const NotificationIcon = () => {
+const NotificationIcon = ({ unreadCount }) => {
     return (
         <div className="notification-icon position-relative me-3">
             <i className="fas fa-bell text-white"></i>
-            <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">3</span> {/* Example badge number */}
+            {unreadCount > 0 && (
+                <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                    {unreadCount}
+                </span>
+            )}
         </div>
     );
 };
