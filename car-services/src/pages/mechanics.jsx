@@ -127,7 +127,7 @@ const SidebarContent = () => {
                 <a className="nav-link" href="#">Profile</a>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="#">Settings</a>
+                <a className="nav-link" href="#">Log out</a>
             </li>
         </ul>
     );
