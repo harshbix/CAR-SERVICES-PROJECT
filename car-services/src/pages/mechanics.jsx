@@ -8,7 +8,7 @@ const Mechanics = () => {
     const initialNotifications = [
         { id: 1, text: 'New request from John Doe', read: false },
         { id: 2, text: 'New request from Jane Smith', read: false },
-        { id: 3, text: 'Request from Michael Johnson is pending', read: false },
+        { id: 3, text: 'New request from Michael Johnson', read: false },
     ];
 
     const [notifications, setNotifications] = useState(initialNotifications);
@@ -83,7 +83,7 @@ const Header = ({ unreadCount }) => {
             <NotificationIcon unreadCount={unreadCount} />
             <Offcanvas show={show} onHide={handleClose} id="sidebar" className="d-md-none">
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Sidebar</Offcanvas.Title>
+                    <Offcanvas.Title>Car Service Pro</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <SidebarContent />
