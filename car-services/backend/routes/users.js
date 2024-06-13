@@ -1,6 +1,6 @@
-const express = require('express');
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
+import express from 'express';
+import bcrypt from 'bcrypt';
+import User from '../models/User.js'; // Ensure the file extension is included
 
 const router = express.Router();
 
@@ -31,4 +31,4 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
