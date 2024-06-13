@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import userRoutes from './routes/users.js'; // Import the user routes
+import userRoutes from './routes/users.js'; 
 
 const app = express();
 const PORT = process.env.PORT || 5000;
