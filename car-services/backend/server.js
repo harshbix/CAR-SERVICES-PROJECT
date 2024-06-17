@@ -19,12 +19,9 @@ app.use(cors());
 
 // MongoDB connection
 const dbURI = 'mongodb+srv://Junior:Jonathan101@cluster0.kooqsc3.mongodb.net/users?retryWrites=true&w=majority&serverSelectionTimeoutMS=5000&connectTimeoutMS=10000';
-mongoose.connect(dbURI, {
-    useNewUrlParser: true, // Even though deprecated, ensures compatibility
-    useUnifiedTopology: true // Even though deprecated, ensures compatibility
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(dbURI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/dist')));
