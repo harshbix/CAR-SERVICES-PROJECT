@@ -16,7 +16,7 @@ const Search = ({ onSearch }) => {
     };
 
     return (
-        <form className="search-container py-5 row align-items-center" onSubmit={handleSearch}>
+        <form className="search-container py-3 row align-items-center" onSubmit={handleSearch}>
             <div className="input-group col">
                 <div className="input-group-prepend">
                     <span className="input-group-text bg-black border-black">

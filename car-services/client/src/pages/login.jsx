@@ -13,7 +13,7 @@ const Login = () => {
                         <h1>Log In</h1>
                     </div>
                     <div className="p-4 bg-light rounded">
-                        <form action="/" className='w-100'>
+                        <form action="/home" className='w-100'>
                             <div className="mb-3 mt-3">
                                 <label htmlFor="email" className="form-label">Email :</label>
                                 <input type="email" className="form-control" id="email" placeholder="Enter email" name="email" />
