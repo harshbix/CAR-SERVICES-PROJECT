@@ -31,7 +31,7 @@ const verifyJWT = (req, res, next) => {
   const token = req.headers['authorization'];
   if (!token) return res.status(403).json({ error: 'No token provided' });
 
-  jwt.verify(token, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ", (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) return res.status(500).json({ error: 'Failed to authenticate token' });
 
     req.userId = decoded.id;
@@ -40,9 +40,17 @@ const verifyJWT = (req, res, next) => {
   });
 };
 
-// Example protected route
+// Protected route example
 app.get('/protected', verifyJWT, (req, res) => {
   res.json({ message: `Hello, user ${req.userId} with role ${req.userRole}` });
+});
+
+// All routes other than /api/login and /api/signup require authentication
+app.use((req, res, next) => {
+  if (req.path === '/api/login' || req.path === '/api/signup') {
+    return next(); // Skip authentication for login and signup routes
+  }
+  verifyJWT(req, res, next); // Apply authentication middleware to other routes
 });
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
