@@ -23,6 +23,11 @@ app.use(cors()); // Enable CORS for all routes
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
+// Handle favicon.ico request
+app.get('/favicon.ico', (req, res) => {
+  res.status(204); // No content response
+});
+
 // Routes
 app.use('/api', userRoutes); // API routes for user-related operations
 app.use('/auth', authRoutes); // API routes for authentication
@@ -50,17 +55,22 @@ const verifyJWT = (req, res, next) => {
   });
 };
 
-// Example protected route
-app.get('/protected', verifyJWT, (req, res) => {
-  res.json({ message: `Hello, user ${req.userId} with role ${req.userRole}` });
-});
-
-// Middleware to enforce authentication for all routes except /api/login and /api/signup
-app.use((req, res, next) => {
-  if (req.path === '/api/login' || req.path === '/api/signup') {
+// Apply verifyJWT middleware to all routes under /api (except /api/login and /api/signup)
+app.use('/api', (req, res, next) => {
+  if (req.path === '/login' || req.path === '/signup') {
     return next(); // Skip authentication for login and signup routes
   }
-  verifyJWT(req, res, next); // Apply authentication middleware to other routes
+  verifyJWT(req, res, next); // Apply verifyJWT middleware to other routes
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({ error: 'Unauthorized' });
+  } else {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 // Catch-all route handler: serve React's index.html for any other routes
