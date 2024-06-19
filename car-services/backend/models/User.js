@@ -1,4 +1,3 @@
-// models/User.js
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 
@@ -36,7 +35,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [6, 255], // Password length validation
+      len: [6, 255],
     },
   },
 });

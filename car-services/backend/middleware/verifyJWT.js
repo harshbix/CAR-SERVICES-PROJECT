@@ -13,9 +13,8 @@ const verifyJWT = (req, res, next) => {
       return res.status(500).json({ error: 'Failed to authenticate token' });
     }
 
-    // Store decoded user information in request object for use in subsequent middleware or routes
     req.userId = decoded.id;
-    req.userRole = decoded.role;
+    req.userRole = decoded.userType; // Adjusted to match user role in JWT payload
     next();
   });
 };

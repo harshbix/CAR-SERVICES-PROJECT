@@ -15,14 +15,12 @@ const Login = () => {
       const response = await axios.post('/auth/login', { email, password });
       const { token, user } = response.data;
 
-      // Store token and user data in localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Redirect based on user role
-      if (user.role === 'admin') {
+      if (user.userType === 'admin') {
         navigate('/admin');
-      } else if (user.role === 'mechanic') {
+      } else if (user.userType === 'mechanic') {
         navigate('/mechanic');
       } else {
         navigate('/home');
