@@ -1,13 +1,25 @@
-import mongoose from 'mongoose';
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    phone: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    location: { type: String, required: true },
-    userType: { type: String, required: true },
-    password: { type: String, required: true },
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  location: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  stars: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+User.sync();
+
 export default User;
