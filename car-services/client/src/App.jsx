@@ -15,7 +15,7 @@ const App = () => {
 
   const ShowNavbar = () => {
     const location = useLocation();
-    const showNavbar = location.pathname === '/' || location.pathname === '/search' || location.pathname === '/profile';
+    const showNavbar = location.pathname === '/home' || location.pathname === '/search' || location.pathname === '/profile';
 
     return showNavbar ? <Navbar /> : null;
   };
@@ -25,10 +25,11 @@ const App = () => {
       <div>
         <ShowNavbar />
         <Routes>
-          <Route path="/" element={<Home username={username} />} />
+          <Route path="/home" element={<Home username={username} />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/mechanics" element={<Mechanics />} />

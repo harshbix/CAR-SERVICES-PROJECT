@@ -7,6 +7,7 @@ const Home = ({ username }) => {
     const [userData, setUserData] = useState([]);
     const [location, setLocation] = useState(null);
     const [address, setAddress] = useState('');
+    const [nearbyAddresses, setNearbyAddresses] = useState([]);
 
     useEffect(() => {
         // Fetch user data from public/users.json
@@ -24,6 +25,7 @@ const Home = ({ username }) => {
                     const { latitude, longitude } = position.coords;
                     setLocation({ latitude, longitude });
                     fetchAddress(latitude, longitude);
+                    fetchNearbyPlaces(latitude, longitude);
                 },
                 (error) => {
                     console.error('Error getting location:', error);
@@ -51,6 +53,24 @@ const Home = ({ username }) => {
         }
     };
 
+    const fetchNearbyPlaces = async (latitude, longitude) => {
+        try {
+            const response = await fetch(
+                `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&key=YOUR_API_KEY`
+            );
+            const data = await response.json();
+            if (data.results && data.results.length > 0) {
+                const nearby = data.results.map(place => place.vicinity);
+                setNearbyAddresses(nearby);
+            } else {
+                setNearbyAddresses(['No nearby places found']);
+            }
+        } catch (error) {
+            console.error('Error fetching nearby places:', error);
+            setNearbyAddresses(['Error fetching nearby places']);
+        }
+    };
+
     return (
         <div className='container py-4 bg-dark'>
             {username ? (
@@ -62,13 +82,18 @@ const Home = ({ username }) => {
             {location ? (
                 <div className='text-white'>
                     <p>Your location: {address}</p>
+                    <h4>Nearby Places:</h4>
+                    <ul>
+                        {nearbyAddresses.map((addr, index) => (
+                            <li key={index}>{addr}</li>
+                        ))}
+                    </ul>
                 </div>
             ) : (
                 <p className='text-white'>Fetching your location...</p>
             )}
             <div>
                 <h4 className='text-white mb-4'>Top service providers</h4>
-                {/* Map through user data and render a top card for each user */}
                 {userData.map((user, index) => (
                     <TopCard key={index} name={user.name} location={user.location} stars={user.stars} />
                 ))}
