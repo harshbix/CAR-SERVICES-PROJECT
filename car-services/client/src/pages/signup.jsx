@@ -33,8 +33,10 @@ const SignUp = () => {
         try {
             const response = await axios.post('/api/signup', formData);
             console.log('User registered successfully:', response.data);
+            // Redirect or show success message as needed
         } catch (error) {
             console.error('Error registering user:', error);
+            // Handle error state or show error message
         }
     };
 
@@ -147,6 +149,6 @@ const SignUp = () => {
             </div>
         </div>
     );
-}
+};
 
 export default SignUp;
