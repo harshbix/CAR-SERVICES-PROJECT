@@ -1,10 +1,9 @@
-// db.js
 import { Sequelize } from 'sequelize';
 
 // Initialize SQLite connection
 const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './database.sqlite' // Path to the SQLite file
+  dialect: 'sqlite',       // Specify the dialect as SQLite
+  storage: './database.sqlite' // Specify the path where SQLite database file will be created
 });
 
 // Test the connection

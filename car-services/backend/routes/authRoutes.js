@@ -6,7 +6,7 @@ import User from '../models/User.js'; // Ensure correct path to your User model
 const router = express.Router();
 
 // Secret key for JWT (replace with environment variable in production)
-const JWT_SECRET = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ";
+const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 
 // User signup
 router.post('/signup', async (req, res) => {
