@@ -12,6 +12,7 @@ const initializeDatabase = async () => {
     await User.bulkCreate([
       { name: 'Japhary Juma', phone: '1234567890', email: 'john@example.com', location: 'Magari Mabovu', userType: 'user', password: 'password1' },
       { name: 'James Elioth', phone: '0987654321', email: 'jane@example.com', location: 'Uwanja Mpya', userType: 'mechanic', password: 'password2' },
+      { name: 'alowe mwakunda', phone: '0987654367', email: 'suma@example.com', location: 'majani Mpya', userType: 'admin', password: 'password6' },
     ]);
 
     console.log('Database has been initialized with dummy data.');
