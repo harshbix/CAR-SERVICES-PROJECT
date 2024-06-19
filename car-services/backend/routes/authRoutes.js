@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
       {
         id: user.id,
         email: user.email,
-        userType: user.userType // Adjust based on your User model
+        userType: user.role // Adjust based on your User model
       },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        userType: user.userType // Adjust based on your User model
+        userType: user.role // Adjust based on your User model
       }
     });
 

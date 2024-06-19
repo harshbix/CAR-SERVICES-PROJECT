@@ -3,7 +3,7 @@ import { Sequelize } from 'sequelize';
 // Initialize SQLite connection
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './database.sqlite'
+  storage: './utils/database.sqlite'
 });
 
 // Test the connection

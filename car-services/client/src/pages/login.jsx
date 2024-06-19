@@ -18,9 +18,9 @@ const Login = () => {
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      if (user.userType === 'admin') {
+      if (user.role === 'admin') {
         navigate('/admin');
-      } else if (user.userType === 'mechanic') {
+      } else if (user.role === 'mechanic') {
         navigate('/mechanic');
       } else {
         navigate('/home');

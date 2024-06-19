@@ -7,7 +7,7 @@ const initializeDatabase = async () => {
     await User.bulkCreate([
       {
         name: 'Japhary Juma',
-        email: 'japhary.juma@example.com',
+        email: 'japhary.juma@gmail.com',
         password: 'password123', // Ensure to hash passwords in production
         location: 'Magari Mabovu',
         stars: 5,
@@ -15,7 +15,7 @@ const initializeDatabase = async () => {
       },
       {
         name: 'James Elioth',
-        email: 'james.elioth@example.com',
+        email: 'james.elioth@gmail.com',
         password: 'password123', // Ensure to hash passwords in production
         location: 'Uwanja Mpya',
         stars: 4,
@@ -23,15 +23,15 @@ const initializeDatabase = async () => {
       },
       {
         name: 'Alice Smith',
-        email: 'alice.smith@example.com',
+        email: 'alice.smith@gmail.com',
         password: 'password123', // Ensure to hash passwords in production
         location: 'Downtown',
         stars: 3,
-        role: 'client'
+        role: 'user'
       },
       {
         name: 'Bob Johnson',
-        email: 'bob.johnson@example.com',
+        email: 'bob.johnson@gmail.com',
         password: 'password123', // Ensure to hash passwords in production
         location: 'Suburbs',
         stars: 5,
@@ -39,7 +39,7 @@ const initializeDatabase = async () => {
       },
       {
         name: 'Emily Davis',
-        email: 'emily.davis@example.com',
+        email: 'emily.davis@gmail.com',
         password: 'password123', // Ensure to hash passwords in production
         location: 'City Center',
         stars: 4,
@@ -47,7 +47,7 @@ const initializeDatabase = async () => {
       },
       {
         name: 'Michael Brown',
-        email: 'michael.brown@example.com',
+        email: 'michael.brown@gmail.com',
         password: 'password123', // Ensure to hash passwords in production
         location: 'Industrial Area',
         stars: 5,
