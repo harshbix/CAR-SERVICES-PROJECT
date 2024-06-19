@@ -1,32 +1,43 @@
 // models/User.js
-import { Sequelize } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 
 const User = sequelize.define('User', {
   id: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
   name: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  phone: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
   email: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-  },
-  password: {
-    type: Sequelize.STRING,
-    allowNull: false,
     validate: {
-      len: [6, 100], // Password must be between 6 and 100 characters long
+      isEmail: true,
     },
   },
-  role: {
-    type: Sequelize.ENUM('admin', 'mechanic', 'user'),
+  location: {
+    type: DataTypes.STRING,
     allowNull: false,
+  },
+  userType: {
+    type: DataTypes.ENUM('user', 'mechanic'),
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      len: [6, 255], // Password length validation
+    },
   },
 });
 

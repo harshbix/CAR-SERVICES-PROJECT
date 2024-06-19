@@ -1,3 +1,4 @@
+// components/SignUp.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -62,11 +63,11 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="number" className="form-label">Phone:</label>
+                            <label htmlFor="phone" className="form-label">Phone:</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="number"
+                                id="phone"
                                 name="phone"
                                 placeholder="Enter phone number"
                                 value={formData.phone}
