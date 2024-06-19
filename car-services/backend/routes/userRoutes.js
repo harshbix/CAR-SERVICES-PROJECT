@@ -11,3 +11,4 @@ router.get('/users', verifyJWT, getUsers);
 router.post('/signup', addUser);
 
 export default router;
+
