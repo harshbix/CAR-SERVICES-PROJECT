@@ -62,11 +62,11 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="phone" className="form-label">Phone:</label>
+                            <label htmlFor="number" className="form-label">Phone:</label>
                             <input
                                 type="text"
                                 className="form-control"
-                                id="phone"
+                                id="number"
                                 name="phone"
                                 placeholder="Enter phone number"
                                 value={formData.phone}

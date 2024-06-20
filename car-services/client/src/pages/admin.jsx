@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Assuming you use axios for HTTP requests
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faWrench, faChartBar } from '@fortawesome/free-solid-svg-icons';
-import '../styles/admin.css'; // Import Bootstrap and custom CSS for styling
 
 const Admin = () => {
     const [requests, setRequests] = useState([]);

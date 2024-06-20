@@ -32,8 +32,8 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/mechanics" element={<Mechanics />} />
-          {/* Default route to redirect to login or home */}
-          <Route path="*" element={<Login />} />
+          {/* Default route to redirect to login */}
+          <Route path="/" element={<Login />} />
         </Routes>
       </div>
     </Router>
