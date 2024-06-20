@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -39,7 +39,7 @@ const Login = () => {
         <div className="p-4 bg-light rounded">
           <form onSubmit={handleLogin} className="w-100">
             <div className="mb-3 mt-3">
-              <label htmlFor="email" className="form-label">Email :</label>
+              <label htmlFor="email" className="form-label">Email:</label>
               <input
                 type="email"
                 className="form-control"
@@ -51,7 +51,7 @@ const Login = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="password" className="form-label">Password :</label>
+              <label htmlFor="password" className="form-label">Password:</label>
               <input
                 type="password"
                 className="form-control"
