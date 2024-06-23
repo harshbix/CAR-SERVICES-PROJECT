@@ -17,13 +17,11 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Generate a JWT token
     const token = jwt.sign(
       {
         id: user.id,
@@ -34,14 +32,22 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // Respond with the token and user information
+    // Determine the redirect URL based on the user's role
+    let redirectUrl = '/home';
+    if (user.role === 'mechanic') {
+      redirectUrl = '/mechanics';
+    } else if (user.role === 'admin') {
+      redirectUrl = '/admin';
+    }
+
     res.json({
       token,
       user: {
         id: user.id,
         email: user.email,
         userType: user.role // Adjust based on your User model
-      }
+      },
+      redirectUrl
     });
 
   } catch (error) {
