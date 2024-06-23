@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import sequelize from './config/db.js';
@@ -11,6 +12,12 @@ import jwt from 'jsonwebtoken';
 // Get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Configure dotenv to load environment variables
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+// Log the JWT_SECRET to check if it's being loaded
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 // Initialize Express app
 const app = express();
@@ -35,7 +42,7 @@ app.use('/auth', authRoutes); // Correctly use authRoutes
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
   const token = req.headers['authorization'];
-  
+
   if (!token) {
     return res.status(403).json({ error: 'No token provided' });
   }
@@ -52,7 +59,7 @@ const verifyJWT = (req, res, next) => {
   });
 };
 
-// Apply verifyJWT middleware to all routes under /api (except /api/login and /api/signup)
+// Apply verifyJWT middleware to all routes under /api (except /auth/login and /auth/signup)
 app.use('/api', (req, res, next) => {
   if (req.path === '/login' || req.path === '/signup') {
     return next(); // Skip authentication for login and signup routes
