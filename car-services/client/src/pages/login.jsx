@@ -20,9 +20,11 @@ const Login = () => {
 
       if (user.role === 'admin') {
         navigate('/admin');
-      } else if (user.role === 'mechanic') {
+      } 
+      else if (user.role === 'mechanic') {
         navigate('/mechanic');
-      } else {
+      } 
+      else {
         navigate('/home');
       }
     } catch (err) {
