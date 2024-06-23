@@ -46,7 +46,7 @@ export const loginUser = async (req, res) => {
 
         let redirectUrl = '/home';
         if (user.role === 'mechanic') {
-            redirectUrl = '/mechanic';
+            redirectUrl = '/mechanics';
         } else if (user.role === 'admin') {
             redirectUrl = '/admin';
         }
