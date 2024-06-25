@@ -2,29 +2,32 @@ import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-// Define and export the getUsers function
+// Function to get all users
 export const getUsers = async (req, res) => {
     try {
         const users = await User.findAll();
         res.status(200).json(users);
     } catch (error) {
+        console.error('Error fetching users:', error);
         res.status(500).json({ error: 'Error fetching users' });
     }
 };
 
-// Define and export the addUser function
+// Function to add a new user (signup)
 export const addUser = async (req, res) => {
     const { name, email, password, role } = req.body;
     try {
+        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({ name, email, password: hashedPassword, role });
         res.status(201).json(newUser);
     } catch (error) {
+        console.error('Error creating user:', error);
         res.status(500).json({ error: 'Error creating user' });
     }
 };
 
-// Define and export the loginUser function
+// Function to login a user
 export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -34,14 +37,17 @@ export const loginUser = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Debugging: Log passwords to ensure they are as expected
-        console.log('Password from DB:', user.password);
-        console.log('Password from request:', password);
-
         // Direct comparison of plain text passwords
         if (password !== user.password) {
             console.log('Passwords do not match');
             return res.status(400).json({ error: 'Invalid credentials' });
+        }
+
+        let redirectUrl = '/home';
+        if (user.role === 'mechanic') {
+            redirectUrl = '/mechanic';
+        } else if (user.role === 'admin') {
+            redirectUrl = '/admin';
         }
 
         const token = jwt.sign(

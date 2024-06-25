@@ -13,20 +13,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/auth/login', { email, password });
-      const { token, user } = response.data;
+      const { token, user, redirectUrl } = response.data; // Get redirectUrl from response
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      if (user.role === 'admin') {
-        navigate('/admin');
-      } 
-      else if (user.role === 'mechanic') {
-        navigate('/mechanic');
-      } 
-      else {
-        navigate('/home');
-      }
+      // Navigate to the redirectUrl provided by the backend
+      navigate(redirectUrl);
     } catch (err) {
       setError('Invalid credentials. Please try again.');
     }
