@@ -37,8 +37,9 @@ export const loginUser = async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // Direct comparison of plain text passwords
-        if (password !== user.password) {
+        // Compare the hashed password with the input password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
             console.log('Passwords do not match');
             return res.status(400).json({ error: 'Invalid credentials' });
         }
@@ -56,9 +57,20 @@ export const loginUser = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.status(200).json({ token, user });
+        res.status(200).json({ token, user, redirectUrl });
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ error: 'Error logging in' });
+    }
+};
+
+// Function to get all mechanics
+export const getMechanics = async (req, res) => {
+    try {
+        const mechanics = await User.findAll({ where: { role: 'mechanic' } });
+        res.status(200).json(mechanics);
+    } catch (error) {
+        console.error('Error fetching mechanics:', error);
+        res.status(500).json({ error: 'Error fetching mechanics' });
     }
 };
