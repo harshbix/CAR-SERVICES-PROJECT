@@ -79,7 +79,7 @@ const TopCard = () => {
                                     </button>
                                 </div>
                             </div>
-                            {/* Additional information can be added here */}
+                        
                         </div>
                     </div>
                 </div>
