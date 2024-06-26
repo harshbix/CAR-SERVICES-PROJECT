@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import requestRoutes from './routes/requestRoutes.js';
 import sequelize from './config/db.js';
 import jwt from 'jsonwebtoken';
 
@@ -37,7 +38,8 @@ app.get('/favicon.ico', (req, res) => {
 
 // Routes
 app.use('/api', userRoutes);
-app.use('/auth', authRoutes); // Correctly use authRoutes
+app.use('/auth', authRoutes);
+app.use('/requests', requestRoutes); // Add the new request routes
 
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
