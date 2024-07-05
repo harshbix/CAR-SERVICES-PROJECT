@@ -24,7 +24,7 @@ const TopCard = () => {
         };
 
         fetchMechanics();
-    }, []);
+}, []);
 
     const handleContact = async (mechanic) => {
         setSelectedMechanic(mechanic);
