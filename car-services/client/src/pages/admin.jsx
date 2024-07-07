@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Assuming you use axios for HTTP requests
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUsers, faWrench, faChartBar } from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faWrench, faChartBar, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Admin = () => {
@@ -10,7 +10,6 @@ const Admin = () => {
     const [clients, setClients] = useState([]);
 
     useEffect(() => {
-        // Fetch requests, mechanics, and clients data from API endpoints
         fetchRequests();
         fetchMechanics();
         fetchClients();
@@ -18,14 +17,12 @@ const Admin = () => {
 
     const fetchRequests = async () => {
         try {
-            // Replace with actual fetch call to your API endpoint or JSON file
-            const response = await fetch('/requests.json');
-            if (response.ok) {
-                const data = await response.json();
-                setRequests(data);
-            } else {
-                console.error('Failed to fetch requests:', response.statusText);
-            }
+            const response = await axios.get('/api/requests', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setRequests(response.data);
         } catch (error) {
             console.error('Error fetching requests:', error);
         }
@@ -33,8 +30,11 @@ const Admin = () => {
 
     const fetchMechanics = async () => {
         try {
-            // Replace with actual fetch call to your API endpoint
-            const response = await axios.get('/api/mechanics');
+            const response = await axios.get('/api/mechanics', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             setMechanics(response.data);
         } catch (error) {
             console.error('Error fetching mechanics:', error);
@@ -43,12 +43,33 @@ const Admin = () => {
 
     const fetchClients = async () => {
         try {
-            // Replace with actual fetch call to your API endpoint
-            const response = await axios.get('/api/clients');
+            const response = await axios.get('/api/clients', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             setClients(response.data);
         } catch (error) {
             console.error('Error fetching clients:', error);
         }
+    };
+
+    const handleDeleteRequest = async (id) => {
+        try {
+            await axios.delete(`/api/requests/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setRequests(requests.filter(request => request.id !== id));
+        } catch (error) {
+            console.error('Error deleting request:', error);
+        }
+    };
+
+    const handleEditRequest = (id) => {
+        // Implement edit functionality here
+        console.log('Edit request', id);
     };
 
     return (
@@ -94,7 +115,28 @@ const Admin = () => {
                         <div className="card-body">
                             <ul className="list-group list-group-flush">
                                 {requests.map((request, index) => (
-                                    <li key={index} className="list-group-item">{request.details}</li>
+                                    <li key={index} className="list-group-item">
+                                        <div className="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>{request.clientName}</strong> requested <strong>{request.mechanicName}</strong>
+                                                <p className="mb-0">{request.details}</p>
+                                            </div>
+                                            <div>
+                                                <button 
+                                                    className="btn btn-sm btn-warning me-2"
+                                                    onClick={() => handleEditRequest(request.id)}
+                                                >
+                                                    <FontAwesomeIcon icon={faEdit} />
+                                                </button>
+                                                <button 
+                                                    className="btn btn-sm btn-danger"
+                                                    onClick={() => handleDeleteRequest(request.id)}
+                                                >
+                                                    <FontAwesomeIcon icon={faTrash} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </li>
                                 ))}
                             </ul>
                         </div>

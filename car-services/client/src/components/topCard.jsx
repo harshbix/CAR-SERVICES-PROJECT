@@ -24,7 +24,7 @@ const TopCard = () => {
         };
 
         fetchMechanics();
-}, []);
+    }, []);
 
     const handleContact = async (mechanic) => {
         setSelectedMechanic(mechanic);
@@ -77,9 +77,9 @@ const TopCard = () => {
                                 <p><strong>Phone:</strong> {selectedMechanic.phone}</p>
                             </div>
                             <div className="modal-footer">
-                                <button className="btn btn-primary" onClick={() => window.open(`tel:${selectedMechanic.phone}`)}>
+                                <a className="btn btn-primary" href={`tel:${selectedMechanic.phone}`}>
                                     <FontAwesomeIcon icon={faPhone} /> Call
-                                </button>
+                                </a>
                                 <button type="button" className="btn btn-secondary" onClick={() => setSelectedMechanic(null)}>Close</button>
                             </div>
                         </div>

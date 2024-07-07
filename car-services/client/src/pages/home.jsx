@@ -14,7 +14,12 @@ const Home = ({ username }) => {
         // Fetch user data from public/users.json
         fetch('/users.json')
             .then(response => response.json())
-            .then(data => setUserData(data))
+            .then(data => {
+                // Filter out duplicate mechanics
+                const uniqueMechanics = Array.from(new Set(data.map(mechanic => mechanic.id)))
+                    .map(id => data.find(mechanic => mechanic.id === id));
+                setUserData(uniqueMechanics);
+            })
             .catch(error => console.error('Error fetching user data:', error));
     }, []);
 
