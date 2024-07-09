@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUsers, faWrench, faChartBar, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// Define the token here (replace with your actual token)
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
 const Admin = () => {
     const [requests, setRequests] = useState([]);
     const [mechanics, setMechanics] = useState([]);
@@ -19,7 +22,7 @@ const Admin = () => {
         try {
             const response = await axios.get('/api/requests', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${TOKEN}`
                 }
             });
             setRequests(response.data);
@@ -32,7 +35,7 @@ const Admin = () => {
         try {
             const response = await axios.get('/api/mechanics', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${TOKEN}`
                 }
             });
             setMechanics(response.data);
@@ -45,7 +48,7 @@ const Admin = () => {
         try {
             const response = await axios.get('/api/clients', {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${TOKEN}`
                 }
             });
             setClients(response.data);
@@ -58,7 +61,7 @@ const Admin = () => {
         try {
             await axios.delete(`/api/requests/${id}`, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${TOKEN}`
                 }
             });
             setRequests(requests.filter(request => request.id !== id));

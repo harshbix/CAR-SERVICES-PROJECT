@@ -36,30 +36,38 @@ app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
 });
 
-// Routes
-app.use('/api', userRoutes);
-app.use('/auth', authRoutes);
-app.use('/requests', requestRoutes); // Add the new request routes
-
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
-  const token = req.headers['authorization'];
+  const authHeader = req.headers['authorization'];
 
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return res.status(403).json({ error: 'No token provided' });
   }
+
+  const token = authHeader.split(' ')[1];
+
+  // Log the token for debugging
+  console.log('Token:', token);
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       console.error('Failed to authenticate token:', err);
-      return res.status(500).json({ error: 'Failed to authenticate token' });
+      return res.status(401).json({ error: 'Failed to authenticate token' });
     }
+
+    // Log the decoded payload for debugging
+    console.log('Decoded:', decoded);
 
     req.userId = decoded.id;
     req.userRole = decoded.userType; // Adjusted to match user role in JWT payload
     next();
   });
 };
+
+// Routes
+app.use('/api', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/requests', verifyJWT, requestRoutes); // Add the new request routes with JWT verification
 
 // Apply verifyJWT middleware to all routes under /api (except /auth/login and /auth/signup)
 app.use('/api', (req, res, next) => {

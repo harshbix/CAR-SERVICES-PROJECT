@@ -28,7 +28,7 @@ const verifyJWT = (req, res, next) => {
   });
 };
 
-router.post('/create', verifyJWT, async (req, res) => {
+router.post('/request', verifyJWT, async (req, res) => {
   const { mechanicId, message } = req.body;
   const userId = req.userId; // assuming user ID is set in the JWT payload
 
