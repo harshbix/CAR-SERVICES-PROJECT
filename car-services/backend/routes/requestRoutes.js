@@ -1,4 +1,3 @@
-// routes/requestRoutes.js
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import Request from '../models/request.js';
@@ -10,11 +9,13 @@ const router = express.Router();
 
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
-  const token = req.headers['authorization'];
+  const authHeader = req.headers['authorization'];
 
-  if (!token) {
+  if (!authHeader) {
     return res.status(403).json({ error: 'No token provided' });
   }
+
+  const token = authHeader.split(' ')[1];
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
@@ -28,7 +29,7 @@ const verifyJWT = (req, res, next) => {
   });
 };
 
-router.post('/request', verifyJWT, async (req, res) => {
+router.post('/requests', verifyJWT, async (req, res) => {
   const { mechanicId, message } = req.body;
   const userId = req.userId; // assuming user ID is set in the JWT payload
 

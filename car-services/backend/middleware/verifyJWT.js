@@ -16,7 +16,7 @@ const verifyJWT = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   // Log the token for debugging
-  console.log('Token:', token);
+  console.log('Received token:', token);
 
   // Check if the token is present after splitting
   if (!token) {
@@ -24,6 +24,7 @@ const verifyJWT = (req, res, next) => {
     return res.status(403).json({ error: 'Invalid token format' });
   }
 
+  // Verify the token
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       console.error('Failed to authenticate token:', err.message);

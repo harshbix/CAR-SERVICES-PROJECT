@@ -29,15 +29,16 @@ const TopCard = () => {
     const handleContact = async (mechanic) => {
         setSelectedMechanic(mechanic);
         try {
-            await axios.post('/api/requests/create', {
+            const token = localStorage.getItem('token');
+            const response = await axios.post('/api/requests', {
                 mechanicId: mechanic.id,
                 message: 'User requested contact'
             }, {
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${token}`
                 }
             });
-            console.log('Request created successfully');
+            console.log('Request created successfully:', response.data);
         } catch (error) {
             console.error('Error creating request:', error);
         }

@@ -36,14 +36,28 @@ app.get('/favicon.ico', (req, res) => {
   res.status(204).end();
 });
 
+// Routes
+app.use('/api', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/requests', requestRoutes); // Add the new request routes
+
+// Define routes to skip token verification
+const routesToSkip = ['/api/requests']; // Add routes here
+
 // Middleware to verify JWT
 const verifyJWT = (req, res, next) => {
+  // Skip verification for certain routes
+  if (routesToSkip.includes(req.path)) {
+    return next();
+  }
+
   const authHeader = req.headers['authorization'];
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader) {
     return res.status(403).json({ error: 'No token provided' });
   }
 
+  // Split the authHeader to get the actual token
   const token = authHeader.split(' ')[1];
 
   // Log the token for debugging
@@ -52,22 +66,14 @@ const verifyJWT = (req, res, next) => {
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       console.error('Failed to authenticate token:', err);
-      return res.status(401).json({ error: 'Failed to authenticate token' });
+      return res.status(500).json({ error: 'Failed to authenticate token' });
     }
-
-    // Log the decoded payload for debugging
-    console.log('Decoded:', decoded);
 
     req.userId = decoded.id;
     req.userRole = decoded.userType; // Adjusted to match user role in JWT payload
     next();
   });
 };
-
-// Routes
-app.use('/api', userRoutes);
-app.use('/auth', authRoutes);
-app.use('/requests', verifyJWT, requestRoutes); // Add the new request routes with JWT verification
 
 // Apply verifyJWT middleware to all routes under /api (except /auth/login and /auth/signup)
 app.use('/api', (req, res, next) => {
