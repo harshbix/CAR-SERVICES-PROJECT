@@ -1,10 +1,26 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import userRoutes from './routes/users.js';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import requestRoutes from './routes/requestRoutes.js';
+import sequelize from './config/db.js';
+import jwt from 'jsonwebtoken';
 
+// Get __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Configure dotenv to load environment variables
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+// Log the JWT_SECRET to check if it's being loaded
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
+// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -12,26 +28,85 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
-// MongoDB connection
-const dbURI = 'mongodb+srv://Junior:Jonathan101@cluster0.kooqsc3.mongodb.net/users?retryWrites=true&w=majority&serverSelectionTimeoutMS=5000&connectTimeoutMS=10000';
-mongoose.connect(dbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.error('MongoDB connection error:', err));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Handle favicon.ico request
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
 
 // Routes
 app.use('/api', userRoutes);
+app.use('/auth', authRoutes);
+app.use('/requests', requestRoutes); // Add the new request routes
 
-// Serve static files from the React app
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, '../client/dist')));
+// Define routes to skip token verification
+const routesToSkip = ['/api/requests']; // Add routes here
 
+// Middleware to verify JWT
+const verifyJWT = (req, res, next) => {
+  // Skip verification for certain routes
+  if (routesToSkip.includes(req.path)) {
+    return next();
+  }
+
+  const authHeader = req.headers['authorization'];
+
+  if (!authHeader) {
+    return res.status(403).json({ error: 'No token provided' });
+  }
+
+  // Split the authHeader to get the actual token
+  const token = authHeader.split(' ')[1];
+
+  // Log the token for debugging
+  console.log('Token:', token);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.error('Failed to authenticate token:', err);
+      return res.status(500).json({ error: 'Failed to authenticate token' });
+    }
+
+    req.userId = decoded.id;
+    req.userRole = decoded.userType; // Adjusted to match user role in JWT payload
+    next();
+  });
+};
+
+// Apply verifyJWT middleware to all routes under /api (except /auth/login and /auth/signup)
+app.use('/api', (req, res, next) => {
+  if (req.path === '/login' || req.path === '/signup') {
+    return next(); // Skip authentication for login and signup routes
+  }
+  verifyJWT(req, res, next); // Apply verifyJWT middleware to other routes
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({ error: 'Unauthorized' });
+  } else {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Catch-all route handler: serve React's index.html for any other routes
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Initialize database and start the server
+(async () => {
+  try {
+    await sequelize.sync();
+    console.log('Database synchronized');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Error initializing the database:', error);
+  }
+})();

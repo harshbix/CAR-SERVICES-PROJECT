@@ -1,28 +1,92 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faHeart } from '@fortawesome/free-solid-svg-icons';
-import '../styles/topCard.css';
+import { faStar, faHeart, faPhone } from '@fortawesome/free-solid-svg-icons';
 
-const TopCard = ({ name, location, stars }) => {
+const TopCard = () => {
+    const [mechanics, setMechanics] = useState([]);
+    const [selectedMechanic, setSelectedMechanic] = useState(null);
+
+    useEffect(() => {
+        const fetchMechanics = async () => {
+            try {
+                const response = await axios.get('/auth/mechanics', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const uniqueMechanics = Array.from(new Set(response.data.map(mechanic => mechanic.id)))
+                    .map(id => response.data.find(mechanic => mechanic.id === id));
+                setMechanics(uniqueMechanics);
+            } catch (error) {
+                console.error('Error fetching mechanics:', error);
+            }
+        };
+
+        fetchMechanics();
+    }, []);
+
+    const handleContact = async (mechanic) => {
+        setSelectedMechanic(mechanic);
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.post('/api/requests', {
+                mechanicId: mechanic.id,
+                message: 'User requested contact'
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            console.log('Request created successfully:', response.data);
+        } catch (error) {
+            console.error('Error creating request:', error);
+        }
+    };
+
     return (
-        <div className="top-card card my-4">
-            <div className="card-body">
-                <div className="icon-container">
-                    <span className="heart-icon text-black  py-2 pe-2">
-                        <FontAwesomeIcon icon={faHeart} />
-                    </span>
-                    <span className="star-icon text-black p-2">
-                        <FontAwesomeIcon icon={faStar} /> {stars}
-                    </span>
+        <div className="container">
+            {mechanics.map(mechanic => (
+                <div className="card my-4 text-white bg-dark" key={mechanic.id}>
+                    <div className="card-body">
+                        <div className="d-flex justify-content-between">
+                            <div>
+                                <h5 className="card-title">{mechanic.name}</h5>
+                                <p className="card-text">{mechanic.location}</p>
+                            </div>
+                            <div className="d-flex align-items-center">
+                                <FontAwesomeIcon icon={faHeart} className="me-3" />
+                                <FontAwesomeIcon icon={faStar} className="me-2" />
+                                {mechanic.stars}
+                            </div>
+                        </div>
+                        <button className="btn btn-primary mt-3" onClick={() => handleContact(mechanic)}>Contact</button>
+                    </div>
                 </div>
-                <div className="box d-flex justify-content-between my-3">
-                <div className="name-loc">
-                <h5 className="card-title">{name}</h5>
-                <p className="card-text text-muted">{location}</p>
+            ))}
+            {selectedMechanic && (
+                <div className="modal show d-block" tabIndex="-1" role="dialog">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content bg-dark text-white">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Mechanic Details</h5>
+                                <button type="button" className="btn-close" aria-label="Close" onClick={() => setSelectedMechanic(null)}></button>
+                            </div>
+                            <div className="modal-body">
+                                <p><strong>Name:</strong> {selectedMechanic.name}</p>
+                                <p><strong>Location:</strong> {selectedMechanic.location}</p>
+                                <p><strong>Phone:</strong> {selectedMechanic.phone}</p>
+                            </div>
+                            <div className="modal-footer">
+                                <a className="btn btn-primary" href={`tel:${selectedMechanic.phone}`}>
+                                    <FontAwesomeIcon icon={faPhone} /> Call
+                                </a>
+                                <button type="button" className="btn btn-secondary" onClick={() => setSelectedMechanic(null)}>Close</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button className="btn btn-primary px-3">Contact</button>
-                </div>
-            </div>
+            )}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/home.css';
+import axios from 'axios';
 import TopCard from '../components/topCard';
 import Navbar from '../components/navbar';
 
@@ -7,12 +7,19 @@ const Home = ({ username }) => {
     const [userData, setUserData] = useState([]);
     const [location, setLocation] = useState(null);
     const [address, setAddress] = useState('');
+    const [nearbyAddresses, setNearbyAddresses] = useState([]);
+    const [loadingLocation, setLoadingLocation] = useState(true);
 
     useEffect(() => {
         // Fetch user data from public/users.json
         fetch('/users.json')
             .then(response => response.json())
-            .then(data => setUserData(data))
+            .then(data => {
+                // Filter out duplicate mechanics
+                const uniqueMechanics = Array.from(new Set(data.map(mechanic => mechanic.id)))
+                    .map(id => data.find(mechanic => mechanic.id === id));
+                setUserData(uniqueMechanics);
+            })
             .catch(error => console.error('Error fetching user data:', error));
     }, []);
 
@@ -20,34 +27,51 @@ const Home = ({ username }) => {
         // Get the user's location using the Geolocation API
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
-                (position) => {
+                async (position) => {
                     const { latitude, longitude } = position.coords;
                     setLocation({ latitude, longitude });
-                    fetchAddress(latitude, longitude);
+                    await fetchAddress(latitude, longitude);
+                    await fetchNearbyPlaces(latitude, longitude);
+                    setLoadingLocation(false); // Set loading to false after fetching location
                 },
                 (error) => {
                     console.error('Error getting location:', error);
+                    setLoadingLocation(false); // Set loading to false on error
                 }
             );
         } else {
             console.error('Geolocation is not supported by this browser.');
+            setLoadingLocation(false); // Set loading to false if geolocation is not supported
         }
     }, []);
 
     const fetchAddress = async (latitude, longitude) => {
         try {
-            const response = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=YOUR_API_KEY`
-            );
-            const data = await response.json();
-            if (data.results && data.results.length > 0) {
-                setAddress(data.results[0].formatted_address);
-            } else {
-                setAddress('Address not found');
-            }
+            const apiKey = '1e34d49b170048bf833437f736014de8'; // Replace with your Geoapify API key
+            const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${apiKey}`;
+            const response = await axios.get(url);
+            const address = response.data.features[0].properties.formatted;
+            setAddress(address);
         } catch (error) {
             console.error('Error fetching address:', error);
-            setAddress('Error fetching address');
+            setAddress('Address not found');
+        }
+    };
+
+    const fetchNearbyPlaces = async (latitude, longitude) => {
+        try {
+            const apiKey = '1e34d49b170048bf833437f736014de8'; // Replace with your Geoapify API key
+            const url = `https://api.geoapify.com/v1/places/nearby?lat=${latitude}&lon=${longitude}&radius=1000&filter=cycle_parking&limit=10&apiKey=${apiKey}`;
+            const response = await axios.get(url);
+            const data = response.data;
+            if (data.features && data.features.length > 0) {
+                const nearbyPlaces = data.features.map(place => place.properties.name);
+                setNearbyAddresses(nearbyPlaces);
+            } else {
+                setNearbyAddresses(['No nearby places found']);
+            }
+        } catch (error) {
+            console.error('Error while searching:', error);
         }
     };
 
@@ -59,16 +83,23 @@ const Home = ({ username }) => {
                 <h4 className='text-white'>Welcome back!</h4>
             )}
             <h2 className='display-3 fw-bold text-white'>Find car services near you</h2>
-            {location ? (
+            {loadingLocation ? (
+                <p className='text-white'>Fetching your location...</p>
+            ) : location ? (
                 <div className='text-white'>
                     <p>Your location: {address}</p>
+                    {/* <h4>Nearby Places:</h4>
+                    <ul>
+                        {nearbyAddresses.map((addr, index) => (
+                            <li key={index}>{addr}</li>
+                        ))}
+                    </ul> */}
                 </div>
             ) : (
-                <p className='text-white'>Fetching your location...</p>
+                <p className='text-white'>Location not available.</p>
             )}
             <div>
                 <h4 className='text-white mb-4'>Top service providers</h4>
-                {/* Map through user data and render a top card for each user */}
                 {userData.map((user, index) => (
                     <TopCard key={index} name={user.name} location={user.location} stars={user.stars} />
                 ))}

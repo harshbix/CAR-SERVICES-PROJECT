@@ -8,7 +8,7 @@ const SignUp = () => {
         phone: '',
         email: '',
         location: '',
-        userType: 'user',
+        role: 'user',
         password: '',
         confirmPassword: ''
     });
@@ -33,13 +33,15 @@ const SignUp = () => {
         try {
             const response = await axios.post('/api/signup', formData);
             console.log('User registered successfully:', response.data);
+            // Redirect or show success message as needed
         } catch (error) {
             console.error('Error registering user:', error);
+            // Handle error state or show error message
         }
     };
 
     return (
-        <div className="container vh-100 d-flex align-items-center justify-content-center bg-dark">
+        <div className="container d-flex align-items-center justify-content-center bg-dark">
             <div className="col-md-6 col-lg-4">
                 <div className="text-center my-4 text-white">
                     <h1>Sign Up</h1>
@@ -99,12 +101,12 @@ const SignUp = () => {
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="userType" className="form-label">User Type:</label>
+                            <label htmlFor="role" className="form-label">User Type:</label>
                             <select
                                 className="form-control"
-                                id="userType"
-                                name="userType"
-                                value={formData.userType}
+                                id="role"
+                                name="role"
+                                value={formData.role}
                                 onChange={handleChange}
                                 required
                             >
@@ -141,12 +143,13 @@ const SignUp = () => {
                                 <small className="text-danger">Passwords do not match</small>
                             )}
                         </div>
-                        <button type="submit" className="btn btn-primary w-100">Sign Up</button>
+                        <button type="submit" className="btn btn-primary w-100 my-2">Sign Up</button>
+                        <button type="button" className="btn btn-outline-secondary w-100 my-3" onClick={() => navigate('/login')}>Sign In</button>
                     </form>
                 </div>
             </div>
         </div>
     );
-}
+};
 
 export default SignUp;

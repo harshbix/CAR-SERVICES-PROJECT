@@ -11,7 +11,7 @@ function Navbar() {
             <div className="container row">
                 <ul className="navbar-nav col-12 ms-5 row">
                     <li className="nav-item col">
-                        <Link className="nav-link" to="/"><FontAwesomeIcon icon={faHome} /></Link>
+                        <Link className="nav-link" to="/home"><FontAwesomeIcon icon={faHome} /></Link>
                     </li>
                     <li className="nav-item col">
                         <Link className="nav-link" to="/search"><FontAwesomeIcon icon={faSearch} /></Link>

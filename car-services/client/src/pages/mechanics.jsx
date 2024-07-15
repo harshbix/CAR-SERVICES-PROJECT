@@ -1,26 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/mechanics.css'; 
 import { Button, Offcanvas } from 'react-bootstrap';
+import axios from 'axios';
 
 const Mechanics = () => {
-    const initialNotifications = [
-        { id: 1, text: 'New request from John Doe', read: false },
-        { id: 2, text: 'New request from Jane Smith', read: false },
-        { id: 3, text: 'New request from Michael Johnson', read: false },
-    ];
+    const [notifications, setNotifications] = useState([]);
 
-    const [notifications, setNotifications] = useState(initialNotifications);
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const response = await axios.get('/api/requests', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                setNotifications(response.data);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
 
-    const handleAccept = (id) => {
-        setNotifications(notifications.map(notification => 
-            notification.id === id ? { ...notification, read: true } : notification
-        ));
+        fetchNotifications();
+    }, []);
+
+    const handleAccept = async (id) => {
+        try {
+            await axios.put(`/api/requests/${id}`, { read: true }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setNotifications(notifications.map(notification =>
+                notification.id === id ? { ...notification, read: true } : notification
+            ));
+        } catch (error) {
+            console.error('Error marking notification as read:', error);
+        }
     };
 
-    const handleCancel = (id) => {
-        setNotifications(notifications.filter(notification => notification.id !== id));
+    const handleCancel = async (id) => {
+        try {
+            await axios.delete(`/api/requests/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            setNotifications(notifications.filter(notification => notification.id !== id));
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+        }
     };
 
     const unreadCount = notifications.filter(notification => !notification.read).length;
@@ -42,12 +72,14 @@ const Mechanics = () => {
                                             <li key={notification.id} className="list-group-item d-flex justify-content-between align-items-center">
                                                 {notification.text}
                                                 <div>
-                                                    <button 
-                                                        className="btn btn-success btn-sm me-2"
-                                                        onClick={() => handleAccept(notification.id)}
-                                                    >
-                                                        <i className="fas fa-check"></i>
-                                                    </button>
+                                                    {!notification.read && (
+                                                        <button 
+                                                            className="btn btn-success btn-sm me-2"
+                                                            onClick={() => handleAccept(notification.id)}
+                                                        >
+                                                            <i className="fas fa-check"></i>
+                                                        </button>
+                                                    )}
                                                     <button 
                                                         className="btn btn-danger btn-sm"
                                                         onClick={() => handleCancel(notification.id)}
